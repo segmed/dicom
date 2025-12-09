@@ -1,5 +1,7 @@
 package tag
 
+import "sync"
+
 // Code generated from generate_tag_definitions.py. DO NOT EDIT.
 var CommandGroupLength = Tag{0x0000, 0x0000}
 var AffectedSOPClassUID = Tag{0x0000, 0x0002}
@@ -3357,6 +3359,17 @@ var ACR_NEMA_2C_CoefficientsSDVN = Tag{0x7FE0, 0x0020}
 var ACR_NEMA_2C_CoefficientsSDHN = Tag{0x7FE0, 0x0030}
 var ACR_NEMA_2C_CoefficientsSDDN = Tag{0x7FE0, 0x0040}
 var tagDict map[Tag]Info
+var m sync.Mutex
+
+// SetPrivateTagDict sets the private tag dictionary to make sure read and write function
+// normally. Tags of VR Sequence (SQ) should be set here.
+func SetPrivateTagDict(dict map[Tag]Info) {
+	m.Lock()
+	defer m.Unlock()
+	for k, v := range dict {
+		tagDict[k] = v
+	}
+}
 
 func init() {
 	maybeInitTagDict()
