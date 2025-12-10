@@ -1,6 +1,8 @@
 package tag
 
-import "sync"
+import (
+	"sync"
+)
 
 // Code generated from generate_tag_definitions.py. DO NOT EDIT.
 var CommandGroupLength = Tag{0x0000, 0x0000}
@@ -3359,7 +3361,7 @@ var ACR_NEMA_2C_CoefficientsSDVN = Tag{0x7FE0, 0x0020}
 var ACR_NEMA_2C_CoefficientsSDHN = Tag{0x7FE0, 0x0030}
 var ACR_NEMA_2C_CoefficientsSDDN = Tag{0x7FE0, 0x0040}
 var tagDict map[Tag]Info
-var m sync.Mutex
+var m sync.RWMutex
 
 // SetPrivateTagDict sets the private tag dictionary to make sure read and write function
 // normally. Tags of VR Sequence (SQ) should be set here.
