@@ -161,7 +161,7 @@ func ExampleDataset_FlatIterator() {
 	// (0046,0102)
 }
 
-func _ExampleDataset_FlatIteratorWithExhaustAllElements() {
+func ExampleExhaustElementChannel() {
 	nestedData := [][]*Element{
 		{
 			mustNewElement(tag.PatientName, []string{"Bob"}),

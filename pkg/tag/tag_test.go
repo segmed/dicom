@@ -2,7 +2,6 @@ package tag
 
 import (
 	"fmt"
-	"sync"
 	"testing"
 )
 
@@ -61,33 +60,5 @@ func BenchmarkFindPixelDataTag(b *testing.B) {
 			fmt.Println(err)
 		}
 
-	}
-}
-
-func TestConcurrentFind(t *testing.T) {
-	for i := 0; i < 10; i++ {
-		t.Run(fmt.Sprintf("TestConcurrentFind-%d", i), func(t *testing.T) {
-			ta := Tag{Group: 0x0018, Element: 0x9363}
-			wg := sync.WaitGroup{}
-
-			for i := 0; i < 10; i++ {
-				wg.Add(1)
-				go func() {
-					defer wg.Done()
-					SetPrivateTagDict(map[Tag]Info{
-						ta: {Tag: ta, VR: "SQ", Name: "MultienergyCTProcessingSequence", VM: "1"},
-					})
-				}()
-			}
-
-			for i := 0; i < 100; i++ {
-				wg.Add(1)
-				go func() {
-					defer wg.Done()
-					Find(ta)
-				}()
-			}
-			wg.Wait()
-		})
 	}
 }

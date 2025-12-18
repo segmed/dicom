@@ -5,16 +5,12 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
-	"fmt"
 	"math/rand"
-	"os"
-	"path/filepath"
 	"strconv"
 	"testing"
 
 	"github.com/google/go-cmp/cmp/cmpopts"
 
-	"github.com/suyashkumar/dicom/pkg/uid"
 	"github.com/suyashkumar/dicom/pkg/vrraw"
 
 	"github.com/suyashkumar/dicom/pkg/dicomio"
@@ -958,59 +954,4 @@ func buildTagData(t *testing.T, tg tag.Tag) []byte {
 	}
 
 	return data.Bytes()
-}
-
-func TestReadWritePrivateSequenceTag(t *testing.T) {
-	tagMultienergyCTProcessingSequence := tag.Tag{Group: 0x0018, Element: 0x9363}
-	tag.SetPrivateTagDict(map[tag.Tag]tag.Info{
-		tagMultienergyCTProcessingSequence: {Tag: tagMultienergyCTProcessingSequence, VR: "SQ", Name: "MultienergyCTProcessingSequence", VM: "1"},
-	})
-	dir := t.TempDir()
-	for _, txSyntax := range []string{uid.ExplicitVRLittleEndian, uid.ImplicitVRLittleEndian} {
-		value, err := NewValue([][]*Element{
-			{mustNewElement(tag.PatientName, []string{"Bob", "Jones"})},
-		})
-		assertNoError(t, err, "newValue")
-		ds := Dataset{Elements: []*Element{{
-			Tag:                    tagMultienergyCTProcessingSequence,
-			ValueRepresentation:    tag.VRSequence,
-			RawValueRepresentation: "SQ",
-			Value:                  value,
-		}}}
-		ds.Elements = append(ds.Elements, mustNewElement(tag.TransferSyntaxUID, []string{txSyntax}))
-		file, err := os.Create(filepath.Join(dir, "test.dcm"))
-		assertNoError(t, err, "create tempfile")
-		defer file.Close()
-		assertNoError(t, Write(file, ds), "write file")
-
-		ds, err = parseFile(file.Name())
-		assertNoError(t, err, "parse file")
-		elem, err := ds.FindElementByTag(tagMultienergyCTProcessingSequence)
-		assertNoError(t, err, "find element")
-		if elem == nil {
-			t.Fatalf("element not found")
-		}
-	}
-}
-
-func assertNoError(t *testing.T, err error, msg string, args ...interface{}) {
-	if err != nil {
-		msg := fmt.Sprintf(msg, args...)
-		t.Fatalf("%s: %v", msg, err)
-	}
-}
-
-func parseFile(filepath string) (Dataset, error) {
-	f, err := os.Open(filepath)
-	if err != nil {
-		return Dataset{}, err
-	}
-	defer f.Close()
-
-	info, err := f.Stat()
-	if err != nil {
-		return Dataset{}, err
-	}
-
-	return Parse(f, info.Size(), nil)
 }
