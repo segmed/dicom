@@ -9671,7 +9671,7 @@ func maybeInitTagDict() {
 	tagDict[Tag{0x7FE0, 0x0003}] = Info{Tag{0x7FE0, 0x0003}, "UV", "EncapsulatedPixelDataValueTotalLength", "1"}
 	tagDict[Tag{0x7FE0, 0x0008}] = Info{Tag{0x7FE0, 0x0008}, "OF", "FloatPixelData", "1"}
 	tagDict[Tag{0x7FE0, 0x0009}] = Info{Tag{0x7FE0, 0x0009}, "OD", "DoubleFloatPixelData", "1"}
-	tagDict[Tag{0x7FE0, 0x0010}] = Info{Tag{0x7FE0, 0x0010}, "PX", "PixelData", "1"}
+	tagDict[Tag{0x7FE0, 0x0010}] = Info{Tag{0x7FE0, 0x0010}, "OW", "PixelData", "1"}
 	tagDict[Tag{0xFFFA, 0xFFFA}] = Info{Tag{0xFFFA, 0xFFFA}, "SQ", "DigitalSignaturesSequence", "1"}
 	tagDict[Tag{0xFFFC, 0xFFFC}] = Info{Tag{0xFFFC, 0xFFFC}, "OB", "DataSetTrailingPadding", "1"}
 	tagDict[Tag{0xFFFE, 0xE000}] = Info{Tag{0xFFFE, 0xE000}, "NA", "Item", "1"}
