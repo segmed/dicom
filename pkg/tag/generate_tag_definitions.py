@@ -4973,7 +4973,7 @@ DATA = """#
 (7FE0,0003)	UV	EncapsulatedPixelDataValueTotalLength	1	DICOM
 (7FE0,0008)	OF	FloatPixelData	1	DICOM
 (7FE0,0009)	OD	DoubleFloatPixelData	1	DICOM
-(7FE0,0010)	px	PixelData	1	DICOM
+(7FE0,0010)	ox	PixelData	1	DICOM
 (FFFA,FFFA)	SQ	DigitalSignaturesSequence	1	DICOM
 (FFFC,FFFC)	OB	DataSetTrailingPadding	1	DICOM
 (FFFE,E000)	na	Item	1	DICOM
